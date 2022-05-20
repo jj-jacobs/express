@@ -1,0 +1,4 @@
+1. render index when user visits '/'
+2.prompt user with name and emit event called newUser to server with a session index
+3.when server recieves newUser event have it emit giveUsers to all of the giveUsers
+4

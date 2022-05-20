@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script type="text/javascript" src="/socket.io/socket.io.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+
+            var socket = io(); //1
+
+            // socket.on('greeting', function (data) { //4
+            //     console.log(data.msg); //5
+            //     socket.emit('thankyou', { msg: 'Thank you for opening me! -Client' }); //6
+            // });
+            socket.on('getCount', (num) => {
+                $('#count').html(`<h2>${num.num}</h2>`)
+            })
+            socket.on('countUpdated', (num) => {
+                $('#count').html(`<h2>${num.num}</h2>`)
+            })
+            $('#counterBtn').click(() => {
+                console.log('adding')
+                socket.emit('plusOne')
+                return false
+            })
+            $('#resetBtn').click(() => {
+                console.log('reseting')
+                socket.emit('reset')
+                return false
+            })
+            
+        })
+    </script>
+</head>
+
+<body>
+    <h1>The Button has been pushed <h1 id="count"></h1> times</h1>
+    <h2>push button to update count</h2>
+    <button id="counterBtn">push me to add</button>
+    <button id="resetBtn">push me to reset</button>
+</body>
+
+</html>
