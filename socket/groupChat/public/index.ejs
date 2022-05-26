@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script type="text/javascript" src="/socket.io/socket.io.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            // document.getElementById("name").innerHTML = name
+            var socket = io()
+            var currUser = {}
+            socket.on('newUser', () => {
+                var name = prompt('what is your name')
+                var ID = function () {
+                    return '_' + Math.random().toString(36).substr(2, 9);
+                };
+                currUser = { name: name, id: ID() }
+                socket.emit('giveName', currUser)
+            })
+            socket.on('newConnection', (data) => {
+                console.log('data', data)
+                $(`<div>${data.data} just joined</div>`).appendTo('#parent');
+            })
+            $('#msgForm').submit(() => {
+                console.log('new msg', currUser)
+                console.log('val',document.getElementById('msg').value)
+                socket.emit('newMsg', {data: document.getElementById('msg').value, user: currUser}
+                )
+                return false
+            })
+            socket.on('giveNewMsg', (data)=>{
+                $(`<div>${data.user.name} just posted ${data.data}</div>`).appendTo('#parent');
+            })
+        })
+    </script>
+</head>
+
+<body>
+    <h1>index</h1>
+    <h1 id="name"></h1>
+    <div id="parent"></div>
+    <form id="msgForm">
+        <label for="msg">message</label>
+        <input type="text" name="msg" id="msg">
+        <input type="submit">
+    </form>
+</body>
+
+</html>

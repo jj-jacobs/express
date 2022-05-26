@@ -1,0 +1,5 @@
+1. on navigating to / display the index page
+2.a. prompt the user with userInfo input
+2.b. client emits users info to server and server takes it in, then broadcasts it to all clients
+clients emit chat messages with their name and message
+server then listens and broadcasts that message to all clients
